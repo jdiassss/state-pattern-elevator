@@ -1,0 +1,14 @@
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\bin\Debug\net8.0\ElevadorState.exe
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\bin\Debug\net8.0\ElevadorState.deps.json
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\bin\Debug\net8.0\ElevadorState.runtimeconfig.json
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\bin\Debug\net8.0\ElevadorState.dll
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\bin\Debug\net8.0\ElevadorState.pdb
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ElevadorState.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ElevadorState.AssemblyInfoInputs.cache
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ElevadorState.AssemblyInfo.cs
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ElevadorState.csproj.CoreCompileInputs.cache
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ElevadorState.dll
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\refint\ElevadorState.dll
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ElevadorState.pdb
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ElevadorState.genruntimeconfig.cache
+C:\Users\JoaoPedroFerreiraPay\Desktop\ElevadorState\ElevadorState\obj\Debug\net8.0\ref\ElevadorState.dll
