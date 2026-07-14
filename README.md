@@ -9,13 +9,13 @@ Aplicação de console em C# que demonstra a aplicação do padrão de projeto *
 
 ## Descrição
 
-Um elevador é um exemplo natural de máquina de estados: as mesmas ações (abrir porta, subir, entrar em manutenção) precisam se comportar de forma completamente diferente dependendo da condição atual do equipamento. Abrir a porta é uma operação válida quando o elevador está parado, mas deve ser recusada enquanto ele está em movimento ou em manutenção.
+Um elevador é um exemplo natural de máquina de estados: as mesmas ações (abrir porta, subir e entrar em manutenção) precisam se comportar de forma diferente dependendo da condição atual do equipamento. Abrir a porta é uma operação válida quando o elevador está parado, mas deve ser recusada enquanto ele está em movimento ou em manutenção.
 
-A forma mais comum — e mais frágil — de resolver isso é com uma variável de estado (`enum`) e blocos `if`/`switch` repetidos em cada método, verificando "qual é o estado atual" antes de decidir o que fazer. Esse tipo de código cresce mal: cada novo estado obriga a revisar todos os métodos que já existiam, aumentando o risco de esquecer um caso e violando o princípio Aberto/Fechado.
+A forma mais comum, e também mais frágil, de resolver esse problema é utilizar uma variável de estado (`enum`) juntamente com blocos `if` ou `switch` espalhados pelos métodos, verificando qual é o estado atual antes de decidir qual ação executar. Esse tipo de solução tende a crescer mal, pois cada novo estado exige alterações em vários pontos do código, aumentando o risco de erros e violando o princípio Aberto/Fechado (Open/Closed Principle).
 
-Este projeto resolve o mesmo problema aplicando o padrão **State**: cada estado do elevador é uma classe independente, responsável apenas pelo próprio comportamento. O elevador (`Context`) não sabe *como* cada estado se comporta — ele apenas delega a operação solicitada ao estado atual e deixa que o polimorfismo resolva o restante.
+Neste projeto, o problema foi resolvido utilizando o padrão **State**. Cada estado do elevador é representado por uma classe independente, responsável apenas pelo seu próprio comportamento. O `Elevador` (Context) apenas delega a operação solicitada ao estado atual, deixando que o polimorfismo determine qual implementação será executada.
 
-O projeto foi originalmente desenvolvido como trabalho da disciplina de Programação Orientada a Objetos e, posteriormente, revisado e refinado como estudo de caso da aplicação do padrão State.
+O projeto foi desenvolvido inicialmente como parte da disciplina de Programação Orientada a Objetos e, posteriormente, revisado e refinado para servir como um estudo de caso da aplicação do padrão State.
 
 ---
 
