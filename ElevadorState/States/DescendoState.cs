@@ -6,41 +6,33 @@ using ElevadorState.Elevator;
 /// Estado: elevador descendo. Simétrico ao SubindoState: sabe como mover
 /// o elevador um andar para baixo e quando encerrar o movimento.
 /// </summary>
-public class DescendoState : IElevatorState
+public sealed class DescendoState : IElevatorState
 {
     public string Nome => "Descendo";
 
-    public void AbrirPorta(Elevador elevador)
-    {
-        Console.WriteLine("Não é possível abrir a porta enquanto o elevador está descendo.");
-    }
+    public string AbrirPorta(Elevador elevador) =>
+        "Não é possível abrir a porta enquanto o elevador está descendo.";
 
-    public void FecharPorta(Elevador elevador)
-    {
-        Console.WriteLine("A porta já está fechada; o elevador está em movimento.");
-    }
+    public string FecharPorta(Elevador elevador) =>
+        "A porta já está fechada; o elevador está em movimento.";
 
-    public void Subir(Elevador elevador)
-    {
-        Console.WriteLine("Não é possível inverter o sentido: o elevador já está descendo.");
-    }
+    public string Subir(Elevador elevador) =>
+        "Não é possível inverter o sentido: o elevador já está descendo.";
 
-    public void Descer(Elevador elevador)
+    public string Descer(Elevador elevador)
     {
         elevador.DecrementarAndar();
-        Console.WriteLine($"Elevador descendo... chegou ao andar {elevador.AndarAtual}.");
+        var chegada = $"Elevador descendo... chegou ao andar {elevador.AndarAtual}.";
 
         // Ao chegar, o elevador volta a ficar parado com a porta fechada.
-        elevador.MudarEstado(elevador.PortaFechada);
+        var transicao = elevador.MudarEstado(elevador.PortaFechada);
+
+        return $"{chegada}\n{transicao}";
     }
 
-    public void EntrarManutencao(Elevador elevador)
-    {
-        Console.WriteLine("Não é possível entrar em manutenção enquanto o elevador está em movimento.");
-    }
+    public string EntrarManutencao(Elevador elevador) =>
+        "Não é possível entrar em manutenção enquanto o elevador está em movimento.";
 
-    public void SairManutencao(Elevador elevador)
-    {
-        Console.WriteLine("O elevador não está em manutenção.");
-    }
+    public string SairManutencao(Elevador elevador) =>
+        "O elevador não está em manutenção.";
 }

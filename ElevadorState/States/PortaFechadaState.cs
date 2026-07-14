@@ -6,59 +6,57 @@ using ElevadorState.Elevator;
 /// Estado: porta fechada, elevador parado. É o estado "de repouso": a partir
 /// dele o elevador pode abrir a porta, iniciar um movimento ou entrar em manutenção.
 /// </summary>
-public class PortaFechadaState : IElevatorState
+public sealed class PortaFechadaState : IElevatorState
 {
     public string Nome => "Porta Fechada";
 
-    public void AbrirPorta(Elevador elevador)
+    public string AbrirPorta(Elevador elevador)
     {
-        Console.WriteLine("Porta aberta.");
-        elevador.MudarEstado(elevador.PortaAberta);
+        var transicao = elevador.MudarEstado(elevador.PortaAberta);
+        return $"Porta aberta.\n{transicao}";
     }
 
-    public void FecharPorta(Elevador elevador)
-    {
-        Console.WriteLine("A porta já está fechada.");
-    }
+    public string FecharPorta(Elevador elevador) =>
+        "A porta já está fechada.";
 
-    public void Subir(Elevador elevador)
+    public string Subir(Elevador elevador)
     {
         if (elevador.AndarAtual >= Elevador.AndarMaximo)
         {
-            Console.WriteLine($"Não é possível subir: o elevador já está no andar mais alto ({Elevador.AndarMaximo}).");
-            return;
+            return $"Não é possível subir: o elevador já está no andar mais alto ({Elevador.AndarMaximo}).";
         }
 
-        Console.WriteLine("Elevador iniciando subida...");
-        elevador.MudarEstado(elevador.Subindo);
+        var transicao = elevador.MudarEstado(elevador.Subindo);
 
-        // O deslocamento em si é responsabilidade do estado "Subindo".
-        elevador.Subir();
+        // O deslocamento em si é responsabilidade do estado "Subindo": chamamos
+        // diretamente a instância do novo estado, sem reentrar pelo Context.
+        var chegada = elevador.Subindo.Subir(elevador);
+
+        return $"Elevador iniciando subida...\n{transicao}\n{chegada}";
     }
 
-    public void Descer(Elevador elevador)
+    public string Descer(Elevador elevador)
     {
         if (elevador.AndarAtual <= Elevador.AndarMinimo)
         {
-            Console.WriteLine("Não é possível descer: o elevador já está no térreo.");
-            return;
+            return "Não é possível descer: o elevador já está no térreo.";
         }
 
-        Console.WriteLine("Elevador iniciando descida...");
-        elevador.MudarEstado(elevador.Descendo);
+        var transicao = elevador.MudarEstado(elevador.Descendo);
 
-        // O deslocamento em si é responsabilidade do estado "Descendo".
-        elevador.Descer();
+        // O deslocamento em si é responsabilidade do estado "Descendo": chamamos
+        // diretamente a instância do novo estado, sem reentrar pelo Context.
+        var chegada = elevador.Descendo.Descer(elevador);
+
+        return $"Elevador iniciando descida...\n{transicao}\n{chegada}";
     }
 
-    public void EntrarManutencao(Elevador elevador)
+    public string EntrarManutencao(Elevador elevador)
     {
-        Console.WriteLine("Entrando em manutenção...");
-        elevador.MudarEstado(elevador.Manutencao);
+        var transicao = elevador.MudarEstado(elevador.Manutencao);
+        return $"Entrando em manutenção...\n{transicao}";
     }
 
-    public void SairManutencao(Elevador elevador)
-    {
-        Console.WriteLine("O elevador não está em manutenção.");
-    }
+    public string SairManutencao(Elevador elevador) =>
+        "O elevador não está em manutenção.";
 }

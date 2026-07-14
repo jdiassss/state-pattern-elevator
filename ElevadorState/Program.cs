@@ -1,73 +1,199 @@
+using System.Text;
 using ElevadorState.Elevator;
+
+// Garante que acentos (ã, ç, é...) apareçam corretamente no console,
+// independentemente do codepage padrão do terminal do usuário.
+Console.OutputEncoding = Encoding.UTF8;
 
 var elevador = new Elevador();
 var continuar = true;
 
 while (continuar)
 {
-    ExibirCabecalho(elevador);
-
-    Console.Write("Escolha: ");
+    DesenharTela(elevador);
+    Console.Write("  Escolha uma opção: ");
     var opcao = Console.ReadLine();
-    Console.WriteLine();
+
+    string mensagem;
+    TipoMensagem tipo;
 
     switch (opcao)
     {
         case "1":
-            elevador.AbrirPorta();
+            (mensagem, tipo) = Executar(elevador.AbrirPorta);
             break;
         case "2":
-            elevador.FecharPorta();
+            (mensagem, tipo) = Executar(elevador.FecharPorta);
             break;
         case "3":
-            elevador.Subir();
+            (mensagem, tipo) = Executar(elevador.Subir);
             break;
         case "4":
-            elevador.Descer();
+            (mensagem, tipo) = Executar(elevador.Descer);
             break;
         case "5":
-            elevador.EntrarManutencao();
+            (mensagem, tipo) = Executar(elevador.EntrarManutencao);
             break;
         case "6":
-            elevador.SairManutencao();
+            (mensagem, tipo) = Executar(elevador.SairManutencao);
             break;
         case "7":
-            elevador.MostrarEstado();
+            (mensagem, tipo) = Executar(elevador.MostrarEstado);
             break;
         case "8":
-            elevador.MostrarAndar();
+            (mensagem, tipo) = Executar(elevador.MostrarAndar);
             break;
         case "0":
             continuar = false;
-            Console.WriteLine("Encerrando o sistema do elevador...");
+            mensagem = "Encerrando o sistema do elevador...";
+            tipo = TipoMensagem.Neutra;
             break;
         default:
-            Console.WriteLine("Opção inválida. Tente novamente.");
+            mensagem = "Opção inválida. Digite um número entre 0 e 8.";
+            tipo = TipoMensagem.Invalida;
             break;
     }
 
-    Console.WriteLine();
+    DesenharTela(elevador, (mensagem, tipo));
+
+    if (continuar)
+    {
+        Console.Write("  Pressione ENTER para continuar...");
+        Console.ReadLine();
+    }
 }
 
-// Este switch trata apenas a entrada do usuário (escolha de menu),
-// não decide o comportamento do elevador — essa responsabilidade é inteiramente das classes de estado, através do padrão State.
+// ---------------------------------------------------------------------------
+// A partir daqui: apenas apresentação (UI de console). Nenhum método abaixo
+// decide comportamento do elevador — eles só chamam a API pública já existente
+// de Elevador (AbrirPorta, Subir, MostrarEstado...) e formatam o resultado.
+// A lógica do padrão State continua inteiramente dentro de Elevador/States.
+// ---------------------------------------------------------------------------
 
-static void ExibirCabecalho(Elevador elevador)
+const string Separador = "----------------------------------------------";
+
+static void DesenharTela(Elevador elevador, (string texto, TipoMensagem tipo)? mensagem = null)
 {
-    Console.WriteLine("-------------------------");
-    Console.WriteLine("   SISTEMA DO ELEVADOR");
-    Console.WriteLine("-------------------------");
-    Console.WriteLine($"Estado atual: {elevador.EstadoAtual.Nome}");
-    Console.WriteLine($"Andar atual : {elevador.AndarAtual}");
+    LimparTela();
+
+    EscreverTitulo();
     Console.WriteLine();
-    Console.WriteLine("1 - Abrir porta");
-    Console.WriteLine("2 - Fechar porta");
-    Console.WriteLine("3 - Subir");
-    Console.WriteLine("4 - Descer");
-    Console.WriteLine("5 - Entrar em manutenção");
-    Console.WriteLine("6 - Sair da manutenção");
-    Console.WriteLine("7 - Mostrar estado");
-    Console.WriteLine("8 - Mostrar andar");
-    Console.WriteLine("0 - Sair");
+    EscreverInfoElevador(elevador);
     Console.WriteLine();
+    EscreverMenu();
+    Console.WriteLine();
+
+    if (mensagem is not null)
+    {
+        EscreverMensagem(mensagem.Value.texto, mensagem.Value.tipo);
+        Console.WriteLine();
+    }
+}
+
+static void LimparTela()
+{
+    try
+    {
+        Console.Clear();
+    }
+    catch (IOException)
+    {
+        // Console.Clear() pode falhar quando a saída está redirecionada
+        // (ex.: pipelines de CI). Nesses casos, simplesmente seguimos sem limpar.
+    }
+}
+
+static void EscreverTitulo()
+{
+    Console.ForegroundColor = ConsoleColor.Cyan;
+    Console.WriteLine(Separador);
+    Console.WriteLine("  SISTEMA DE CONTROLE DE ELEVADOR");
+    Console.WriteLine(Separador);
+    Console.ResetColor();
+}
+
+static void EscreverInfoElevador(Elevador elevador)
+{
+    Console.Write("  Estado atual : ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine(elevador.EstadoAtual.Nome);
+    Console.ResetColor();
+
+    Console.Write("  Andar atual  : ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine(elevador.AndarAtual == 0 ? "0 (térreo)" : elevador.AndarAtual.ToString());
+    Console.ResetColor();
+}
+
+static void EscreverMenu()
+{
+    Console.WriteLine(Separador);
+    Console.WriteLine("  MENU");
+    Console.WriteLine(Separador);
+    Console.WriteLine("  1  Abrir porta");
+    Console.WriteLine("  2  Fechar porta");
+    Console.WriteLine("  3  Subir");
+    Console.WriteLine("  4  Descer");
+    Console.WriteLine("  5  Entrar em manutenção");
+    Console.WriteLine("  6  Sair da manutenção");
+    Console.WriteLine("  7  Mostrar estado");
+    Console.WriteLine("  8  Mostrar andar");
+    Console.WriteLine("  0  Sair");
+    Console.WriteLine(Separador);
+}
+
+static void EscreverMensagem(string texto, TipoMensagem tipo)
+{
+    Console.WriteLine("  MENSAGEM");
+    Console.WriteLine(Separador);
+
+    if (tipo == TipoMensagem.Sucesso) Console.ForegroundColor = ConsoleColor.Green;
+    else if (tipo == TipoMensagem.Erro) Console.ForegroundColor = ConsoleColor.Red;
+    else if (tipo == TipoMensagem.Invalida) Console.ForegroundColor = ConsoleColor.DarkYellow;
+
+    foreach (var linha in texto.Split('\n'))
+    {
+        Console.WriteLine($"  {linha}");
+    }
+
+    Console.ResetColor();
+}
+
+// Executa uma operação do Elevador capturando o texto que ela escreve no
+// console (Elevador continua responsável por gerar essa mensagem — ver
+// Elevador.cs) e classifica o resultado apenas para fins de exibição.
+static (string mensagem, TipoMensagem tipo) Executar(Action operacao)
+{
+    var saidaOriginal = Console.Out;
+    using var saidaCapturada = new StringWriter();
+    Console.SetOut(saidaCapturada);
+    try
+    {
+        operacao();
+    }
+    finally
+    {
+        Console.SetOut(saidaOriginal);
+    }
+
+    var texto = saidaCapturada.ToString().TrimEnd('\r', '\n');
+    return (texto, ClassificarMensagem(texto));
+}
+
+static TipoMensagem ClassificarMensagem(string texto)
+{
+    if (texto.StartsWith("Estado atual:") || texto.StartsWith("Andar atual:"))
+    {
+        return TipoMensagem.Neutra;
+    }
+
+    return texto.Contains(">> Estado alterado para:") ? TipoMensagem.Sucesso : TipoMensagem.Erro;
+}
+
+enum TipoMensagem
+{
+    Sucesso,
+    Erro,
+    Invalida,
+    Neutra,
 }

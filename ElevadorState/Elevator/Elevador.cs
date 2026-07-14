@@ -5,10 +5,12 @@ using ElevadorState.States;
 /// <summary>
 /// Context do padrão State.
 /// Não conhece as regras de negócio de cada estado: apenas mantém o estado atual
-/// e delega toda operação solicitada para ele. Também expõe os dados (andar atual,
-/// limites) que os estados precisam para decidir o que é permitido.
+/// e delega toda operação solicitada para ele. Os membros que permitem alterar
+/// o andar ou trocar de estado diretamente são internos: só as próprias classes
+/// de estado (que vivem no mesmo assembly) podem usá-los, evitando que qualquer
+/// código externo viole as regras de negócio contornando os estados.
 /// </summary>
-public class Elevador
+public sealed class Elevador
 {
     public const int AndarMinimo = 0;
     public const int AndarMaximo = 10;
@@ -17,11 +19,13 @@ public class Elevador
     public IElevatorState EstadoAtual { get; private set; }
 
     // Instâncias únicas de cada estado (evita recriar objetos a cada transição).
-    public PortaAbertaState PortaAberta { get; } = new();
-    public PortaFechadaState PortaFechada { get; } = new();
-    public SubindoState Subindo { get; } = new();
-    public DescendoState Descendo { get; } = new();
-    public ManutencaoState Manutencao { get; } = new();
+    // Internas: apenas as próprias classes de estado precisam referenciá-las
+    // para solicitar transições.
+    internal PortaAbertaState PortaAberta { get; } = new();
+    internal PortaFechadaState PortaFechada { get; } = new();
+    internal SubindoState Subindo { get; } = new();
+    internal DescendoState Descendo { get; } = new();
+    internal ManutencaoState Manutencao { get; } = new();
 
     public Elevador()
     {
@@ -30,33 +34,34 @@ public class Elevador
     }
 
     /// <summary>
-    /// Realiza a troca de estado. É este método, chamado pelos próprios estados,
-    /// que torna a transição explícita e visível para quem está lendo o código.
+    /// Realiza a troca de estado e retorna uma mensagem descrevendo a transição.
+    /// Chamado pelos próprios estados concretos — nunca pela camada de apresentação.
     /// </summary>
-    public void MudarEstado(IElevatorState novoEstado)
+    internal string MudarEstado(IElevatorState novoEstado)
     {
         EstadoAtual = novoEstado;
-        Console.WriteLine($">> Estado alterado para: {novoEstado.Nome}");
+        return $">> Estado alterado para: {novoEstado.Nome}";
     }
 
-    public void IncrementarAndar() => AndarAtual++;
+    internal void IncrementarAndar() => AndarAtual++;
 
-    public void DecrementarAndar() => AndarAtual--;
+    internal void DecrementarAndar() => AndarAtual--;
 
-    // Operações do Context: cada uma delega imediatamente para o estado atual.
-    // Note que não existe if/switch aqui verificando "qual é o estado" — quem
-    // decide o comportamento é a própria classe de estado (polimorfismo).
-    public void AbrirPorta() => EstadoAtual.AbrirPorta(this);
+    // Operações do Context: cada uma delega imediatamente para o estado atual
+    // e imprime a mensagem de resultado. Note que não existe if/switch aqui
+    // verificando "qual é o estado" — quem decide o comportamento e a mensagem
+    // é a própria classe de estado (polimorfismo); o Context só exibe o resultado.
+    public void AbrirPorta() => Console.WriteLine(EstadoAtual.AbrirPorta(this));
 
-    public void FecharPorta() => EstadoAtual.FecharPorta(this);
+    public void FecharPorta() => Console.WriteLine(EstadoAtual.FecharPorta(this));
 
-    public void Subir() => EstadoAtual.Subir(this);
+    public void Subir() => Console.WriteLine(EstadoAtual.Subir(this));
 
-    public void Descer() => EstadoAtual.Descer(this);
+    public void Descer() => Console.WriteLine(EstadoAtual.Descer(this));
 
-    public void EntrarManutencao() => EstadoAtual.EntrarManutencao(this);
+    public void EntrarManutencao() => Console.WriteLine(EstadoAtual.EntrarManutencao(this));
 
-    public void SairManutencao() => EstadoAtual.SairManutencao(this);
+    public void SairManutencao() => Console.WriteLine(EstadoAtual.SairManutencao(this));
 
     public void MostrarEstado() => Console.WriteLine($"Estado atual: {EstadoAtual.Nome}");
 

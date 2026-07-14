@@ -1,0 +1,13 @@
+# Visual Studio
+.vs/
+
+# Build
+bin/
+obj/
+
+# Rider
+.idea/
+
+# User files
+*.user
+*.suo

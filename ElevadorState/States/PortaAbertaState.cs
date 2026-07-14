@@ -6,39 +6,31 @@ using ElevadorState.Elevator;
 /// Estado: porta aberta. O elevador não pode se mover enquanto a porta
 /// estiver aberta; a porta precisa ser fechada primeiro.
 /// </summary>
-public class PortaAbertaState : IElevatorState
+public sealed class PortaAbertaState : IElevatorState
 {
     public string Nome => "Porta Aberta";
 
-    public void AbrirPorta(Elevador elevador)
+    public string AbrirPorta(Elevador elevador) =>
+        "A porta já está aberta.";
+
+    public string FecharPorta(Elevador elevador)
     {
-        Console.WriteLine("A porta já está aberta.");
+        var transicao = elevador.MudarEstado(elevador.PortaFechada);
+        return $"Porta fechada.\n{transicao}";
     }
 
-    public void FecharPorta(Elevador elevador)
+    public string Subir(Elevador elevador) =>
+        "Não é possível subir com a porta aberta. Feche a porta primeiro.";
+
+    public string Descer(Elevador elevador) =>
+        "Não é possível descer com a porta aberta. Feche a porta primeiro.";
+
+    public string EntrarManutencao(Elevador elevador)
     {
-        Console.WriteLine("Porta fechada.");
-        elevador.MudarEstado(elevador.PortaFechada);
+        var transicao = elevador.MudarEstado(elevador.Manutencao);
+        return $"Entrando em manutenção...\n{transicao}";
     }
 
-    public void Subir(Elevador elevador)
-    {
-        Console.WriteLine("Não é possível subir com a porta aberta. Feche a porta primeiro.");
-    }
-
-    public void Descer(Elevador elevador)
-    {
-        Console.WriteLine("Não é possível descer com a porta aberta. Feche a porta primeiro.");
-    }
-
-    public void EntrarManutencao(Elevador elevador)
-    {
-        Console.WriteLine("Entrando em manutenção...");
-        elevador.MudarEstado(elevador.Manutencao);
-    }
-
-    public void SairManutencao(Elevador elevador)
-    {
-        Console.WriteLine("O elevador não está em manutenção.");
-    }
+    public string SairManutencao(Elevador elevador) =>
+        "O elevador não está em manutenção.";
 }
