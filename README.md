@@ -1,5 +1,10 @@
 # Sistema de Controle de Elevador — Padrão State (C#)
 
+![.NET](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-12-239120?logo=csharp&logoColor=white)
+![GoF](https://img.shields.io/badge/GoF-State%20Pattern-blue)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+
 Aplicação de console em C# que demonstra a aplicação do padrão de projeto **State (GoF)** através da simulação de um elevador, cujo comportamento muda completamente de acordo com o estado em que se encontra.
 
 ## Descrição
