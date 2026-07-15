@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JoaoPedroFerreiraPay\\Desktop\\ElevadorState\\ElevadorState\\ElevadorState.csproj": {}
+    "C:\\GIT\\JoaoPedroFerreira\\state-pattern-elevator\\ElevadorState\\ElevadorState.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JoaoPedroFerreiraPay\\Desktop\\ElevadorState\\ElevadorState\\ElevadorState.csproj": {
+    "C:\\GIT\\JoaoPedroFerreira\\state-pattern-elevator\\ElevadorState\\ElevadorState.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JoaoPedroFerreiraPay\\Desktop\\ElevadorState\\ElevadorState\\ElevadorState.csproj",
+        "projectUniqueName": "C:\\GIT\\JoaoPedroFerreira\\state-pattern-elevator\\ElevadorState\\ElevadorState.csproj",
         "projectName": "ElevadorState",
-        "projectPath": "C:\\Users\\JoaoPedroFerreiraPay\\Desktop\\ElevadorState\\ElevadorState\\ElevadorState.csproj",
+        "projectPath": "C:\\GIT\\JoaoPedroFerreira\\state-pattern-elevator\\ElevadorState\\ElevadorState.csproj",
         "packagesPath": "C:\\Users\\JoaoPedroFerreiraPay\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JoaoPedroFerreiraPay\\Desktop\\ElevadorState\\ElevadorState\\obj\\",
+        "outputPath": "C:\\GIT\\JoaoPedroFerreira\\state-pattern-elevator\\ElevadorState\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

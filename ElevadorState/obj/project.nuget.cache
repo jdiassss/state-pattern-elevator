@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9Ft3tRZ07jE=",
+  "dgSpecHash": "RJXSS94HpJ0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\JoaoPedroFerreiraPay\\Desktop\\ElevadorState\\ElevadorState\\ElevadorState.csproj",
+  "projectFilePath": "C:\\GIT\\JoaoPedroFerreira\\state-pattern-elevator\\ElevadorState\\ElevadorState.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

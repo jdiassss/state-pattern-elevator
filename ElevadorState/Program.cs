@@ -37,19 +37,13 @@ while (continuar)
         case "6":
             (mensagem, tipo) = Executar(elevador.SairManutencao);
             break;
-        case "7":
-            (mensagem, tipo) = Executar(elevador.MostrarEstado);
-            break;
-        case "8":
-            (mensagem, tipo) = Executar(elevador.MostrarAndar);
-            break;
         case "0":
             continuar = false;
             mensagem = "Encerrando o sistema do elevador...";
             tipo = TipoMensagem.Neutra;
             break;
         default:
-            mensagem = "Opção inválida. Digite um número entre 0 e 8.";
+            mensagem = "Opção inválida. Digite um número entre 0 e 6.";
             tipo = TipoMensagem.Invalida;
             break;
     }
@@ -66,8 +60,8 @@ while (continuar)
 // ---------------------------------------------------------------------------
 // A partir daqui: apenas apresentação (UI de console). Nenhum método abaixo
 // decide comportamento do elevador — eles só chamam a API pública já existente
-// de Elevador (AbrirPorta, Subir, MostrarEstado...) e formatam o resultado.
-// A lógica do padrão State continua inteiramente dentro de Elevador/States.
+// de Elevador (AbrirPorta, Subir...) e formatam o resultado. A lógica do
+// padrão State continua inteiramente dentro de Elevador/States.
 // ---------------------------------------------------------------------------
 
 const string Separador = "----------------------------------------------";
@@ -114,6 +108,8 @@ static void EscreverTitulo()
 
 static void EscreverInfoElevador(Elevador elevador)
 {
+    // Estado e andar ficam sempre visíveis no topo — por isso o menu não
+    // precisa mais de opções separadas para consultá-los.
     Console.Write("  Estado atual : ");
     Console.ForegroundColor = ConsoleColor.Yellow;
     Console.WriteLine(elevador.EstadoAtual.Nome);
@@ -136,9 +132,7 @@ static void EscreverMenu()
     Console.WriteLine("  4  Descer");
     Console.WriteLine("  5  Entrar em manutenção");
     Console.WriteLine("  6  Sair da manutenção");
-    Console.WriteLine("  7  Mostrar estado");
-    Console.WriteLine("  8  Mostrar andar");
-    Console.WriteLine("  0  Sair");
+    Console.WriteLine("  0  Encerrar aplicação");
     Console.WriteLine(Separador);
 }
 
@@ -180,15 +174,8 @@ static (string mensagem, TipoMensagem tipo) Executar(Action operacao)
     return (texto, ClassificarMensagem(texto));
 }
 
-static TipoMensagem ClassificarMensagem(string texto)
-{
-    if (texto.StartsWith("Estado atual:") || texto.StartsWith("Andar atual:"))
-    {
-        return TipoMensagem.Neutra;
-    }
-
-    return texto.Contains(">> Estado alterado para:") ? TipoMensagem.Sucesso : TipoMensagem.Erro;
-}
+static TipoMensagem ClassificarMensagem(string texto) =>
+    texto.Contains(">> Estado alterado para:") ? TipoMensagem.Sucesso : TipoMensagem.Erro;
 
 enum TipoMensagem
 {

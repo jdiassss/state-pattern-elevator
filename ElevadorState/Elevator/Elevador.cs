@@ -62,8 +62,4 @@ public sealed class Elevador
     public void EntrarManutencao() => Console.WriteLine(EstadoAtual.EntrarManutencao(this));
 
     public void SairManutencao() => Console.WriteLine(EstadoAtual.SairManutencao(this));
-
-    public void MostrarEstado() => Console.WriteLine($"Estado atual: {EstadoAtual.Nome}");
-
-    public void MostrarAndar() => Console.WriteLine($"Andar atual: {AndarAtual}");
 }

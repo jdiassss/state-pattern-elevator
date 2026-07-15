@@ -1,13 +1,22 @@
 # Visual Studio
 .vs/
 
-# Build
+# Build output
 bin/
 obj/
 
 # Rider
 .idea/
 
-# User files
+# VS Code
+.vscode/
+
+# User-specific files
 *.user
 *.suo
+*.userosscache
+*.sln.docstates
+
+# OS files
+.DS_Store
+Thumbs.db
